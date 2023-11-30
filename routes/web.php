@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NotesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +19,11 @@ Route::view('/', 'welcome')->name('welcome');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::post('/notes', function () {
-        $title = request('title');
-        $description = request('description');
-    });
+    Route::post('/notes', [NotesController::class, 'store'])
+        ->name('notes.store');
 
-    Route::get('/notes', function () {
-        return view('notes.index');
-    })->name('notes.index');
+    Route::get('/notes', [NotesController::class, 'index'])
+        ->name('notes.index');
 
     Route::get('/notes/{note}', function ($note) {
         return "Welcome to my notes " . $note;
