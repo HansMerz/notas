@@ -17,13 +17,22 @@ use App\Http\Controllers\NotesController;
 
 Route::view('/', 'welcome')->name('welcome');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'/*, 'verified'*/])->group(function () {
 
     Route::post('/notes', [NotesController::class, 'store'])
         ->name('notes.store');
 
     Route::get('/notes', [NotesController::class, 'index'])
         ->name('notes.index');
+
+    Route::get('/notes/{note}/edit', [NotesController::class, 'edit'])
+        ->name('notes.edit');
+
+    Route::put('/notes/{note}', [NotesController::class, 'update'])
+        ->name('notes.update');
+
+    Route::delete('/notes/{note}', [NotesController::class, 'destroy'])
+        ->name('notes.destroy');
 
     Route::get('/notes/{note}', function ($note) {
         return "Welcome to my notes " . $note;

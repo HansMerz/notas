@@ -75,5 +75,11 @@
     "Notes": "Notas",
     "What are you up to?": "¿Qué piensas hacer?",
     "Add": "Agregar",
-    "Note created succesfully!": "Nota creada exitosamente"
+    "Note created succesfully!": "Nota creada exitosamente",
+    "Note updated succesfully!": "Nota actualizada exitosamente",
+    "Note deleted succesfully!": "Nota eliminada exitosamente",
+    "Edit Note": "Editar Nota",
+    "Delete Note": "Eliminar Nota",
+    "Update": "Actualizar",
+    "edited": "editado"
 }

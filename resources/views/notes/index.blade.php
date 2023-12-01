@@ -12,7 +12,7 @@
                     <form method="POST" action="{{route('notes.store')}}">
                         @csrf
                         <x-input-label class="mt-4">{{__('Title')}}</x-input-label>
-                        <input type="text" name="title" class="block w-full rounded-md border-gray-300 bg-white shadow-sm transition-colors duration-300 dark:text-white dark:focus:border-indigo-300 dark:focus:ring dark:focus:ring-indigo-200 dark:focus:ring-opacity-50"/>
+                        <input type="text" name="title" value="{{old('title')}}" class="block w-full rounded-md border-gray-300 bg-white shadow-sm transition-colors duration-300 dark:text-white dark:focus:border-indigo-300 dark:focus:ring dark:focus:ring-indigo-200 dark:focus:ring-opacity-50"/>
                         <x-input-error class="mt-2" :messages="$errors->get('title')"/>
                         <x-input-label class="mt-4">{{__('What are you up to?')}}</x-input-label>
                         <textarea name="description"
@@ -38,11 +38,37 @@
                                         {{$note->user->name}}
                                     </span>
                                     <small class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{$note->created_at->format('j M Y, g:i a')}}</small>
+                                    @unless($note->created_at->eq($note->updated_at))
+                                        <small class="text-sm text-gray-600 dark:text-gray-400"> &middot; {{ __('edited') }}</small>
+                                    @endunless
                                 </div>
                             </div>
                             <p class="mt-4 text-lg text-gray-900 dark:text-gray-100">{{$note->title}}</p>
                             <small class="mt-2 ml-2 text-sm text-gray-600 dark:text-gray-400">{{$note->description}}</small>
                         </div>
+                        @can('update', $note)
+                            <x-dropdown>
+                                <x-slot name="trigger">
+                                    <button>
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"></path>
+                                        </svg>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('notes.edit', $note)">
+                                        {{ __('Edit Note') }}
+                                    </x-dropdown-link>
+                                    <form method="POST" action="{{ route('notes.destroy', $note) }}">
+                                        @csrf @method('DELETE')
+                                        <x-dropdown-link :href="route('notes.destroy', $note)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                            {{ __('Delete Note') }}
+                                        </x-dropdown-link>
+                                    </form>
+
+                                </x-slot>
+                            </x-dropdown>
+                        @endcan
                     </div>
                 @endforeach
             </div>

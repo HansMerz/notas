@@ -41,24 +41,36 @@ class NotesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Notes $notes)
+    public function edit(Notes $note)
     {
-        //
+        $this->authorize('update', $note);
+        return view('notes.edit', [
+            'note' => $note
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Notes $notes)
+    public function update(Request $request, Notes $note)
     {
-        //
+        $this->authorize('update', $note);
+
+        $validated = $request->validate([
+            'title' => ['required', 'min:3', 'max:255'],
+            'description' => ['required', 'min:5', 'max:255']
+        ]);
+        $note->update($validated);
+        return to_route('notes.index')->with('status', __('Note updated succesfully!'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notes $notes)
+    public function destroy(Notes $note)
     {
-        //
+        $this->authorize('delete', $note);
+        $note->delete();
+        return to_route('notes.index')->with('status', __('Note deleted succesfully!'));
     }
 }
