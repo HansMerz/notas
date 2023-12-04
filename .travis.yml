@@ -14,8 +14,8 @@ before_script:
   - mysql -e "CREATE DATABASE example_app"
   - composer self-update
   - composer install --no-interaction --prefer-source
-  - ./vendor/bin/sail php artisan key:generate
-  - ./vendor/bin/sail php artisan migrate
+  - php artisan key:generate
+  - php artisan migrate
 
 script:
   - vendor/bin/phpunit
