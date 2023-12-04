@@ -14,9 +14,10 @@ before_script:
   - mysql -e "CREATE DATABASE example_app"
   - composer self-update
   - composer install --no-interaction --prefer-source
+  - npm install
+  - npm run build
   - php artisan key:generate
   - php artisan migrate
 
 script:
   - vendor/bin/phpunit
-
